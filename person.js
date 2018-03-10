@@ -1,7 +1,7 @@
 function Person(game, mom, dad, x, y) {
     this.gender = null;
     this.age = 0
-    this.maxAge = 30 + Math.floor((Math.random() * 8));
+    this.maxAge = 60 + Math.floor((Math.random() * 8));
     this.hasMatured = false;
     this.hasPartner = false;
     this.partner = null; //reference to partner
