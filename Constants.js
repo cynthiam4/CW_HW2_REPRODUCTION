@@ -1,7 +1,7 @@
 
 //canvas defaults
-var canvasWidth = 900;
-var canvasHeight = 800;
+var canvasWidth = 800;
+var canvasHeight = 600;
 var ZERO = 0;
 
 //Entity Defaults

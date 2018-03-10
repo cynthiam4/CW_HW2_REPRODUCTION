@@ -19,18 +19,14 @@ ASSET_MANAGER.downloadAll(function () {
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
     var gameEngine = new GameEngine();
-    gameEngine.addEntity(new Female(gameEngine, { listOfChildren: [] }, { listOfChildren: [] },
-        Math.floor(Math.random() * canvasWidth), Math.floor(Math.random() * canvasHeight)));
-    gameEngine.addEntity(new Male(gameEngine, { listOfChildren: [] },
-        { listOfChildren: [] }, Math.floor(Math.random() * canvasWidth), Math.floor(Math.random() * canvasHeight)));
-    gameEngine.addEntity(new Female(gameEngine, { listOfChildren: [] }, { listOfChildren: [] },
-        Math.floor(Math.random() * canvasWidth), Math.floor(Math.random() * canvasHeight)));
-    gameEngine.addEntity(new Male(gameEngine, { listOfChildren: [] },
-        { listOfChildren: [] }, Math.floor(Math.random() * canvasWidth), Math.floor(Math.random() * canvasHeight)));
-    gameEngine.addEntity(new Female(gameEngine, { listOfChildren: [] }, { listOfChildren: [] },
-        Math.floor(Math.random() * canvasWidth), Math.floor(Math.random() * canvasHeight)));
-    gameEngine.addEntity(new Male(gameEngine, { listOfChildren: [] },
-        { listOfChildren: [] }, Math.floor(Math.random() * canvasWidth), Math.floor(Math.random() * canvasHeight)));
+    for (let i = 0; i < 8; i++) {
+        gameEngine.addEntity(new Female(gameEngine, { listOfChildren: [] }, { listOfChildren: [] },
+            Math.floor(Math.random() * canvasWidth), Math.floor(Math.random() * canvasHeight)));
+    }
+    for (let i = 0; i < 8; i++) {
+        gameEngine.addEntity(new Male(gameEngine, { listOfChildren: [] },
+            { listOfChildren: [] }, Math.floor(Math.random() * canvasWidth), Math.floor(Math.random() * canvasHeight)));
+    }    
     gameEngine.init(ctx);
     gameEngine.start();
 });
