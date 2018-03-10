@@ -11,7 +11,7 @@ function Person(game, mom, dad, x, y) {
     this.deathCountdown = 0;
     this.parents = [mom, dad]; //[];//preffered order of mom, dad
     this.listOfChildren = [];
-    this.maxChildren = Math.floor(Math.random() * 5);
+    this.maxChildren = Math.floor(Math.random() * 6);
     this.radar = 200;
     this.reproductionWait = 0
     this.radius = 15;
@@ -139,11 +139,8 @@ Person.prototype.update = function () {
 
     //  console.log(this.velocity);
     if (this.isAlive) {
-        if (Math.random() < 0.00001) {
-            this.isTerminallyIll = true;
-        }
         if (this.isTerminallyIll) {
-            if(this.deathCountdown > timeTillDeathFromIllness){
+            if (this.deathCountdown > timeTillDeathFromIllness) {
                 this.isAlive = false;
             }
             this.deathCountdown++;
@@ -153,7 +150,10 @@ Person.prototype.update = function () {
                 this.hasMatured = true;
             }
         } else {
-            if (this.getAge() >= this.maxAge) {
+            if (Math.random() < 0.0001) {
+                this.isTerminallyIll = true;
+            }
+            if (this.getAge() > this.maxAge) {
                 this.isAlive = false;
             }
         }

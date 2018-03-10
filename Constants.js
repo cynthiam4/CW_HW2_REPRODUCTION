@@ -5,8 +5,8 @@ var canvasHeight = 600;
 var ZERO = 0;
 
 //Entity Defaults
-var maxAge = 30;
-var matureAge= 8;
+var maxAge = 70;
+var matureAge= 12;
 var timeTillDeathFromIllness = 180;
 var reproductionWaitTime = 180;//3 seconds
 
