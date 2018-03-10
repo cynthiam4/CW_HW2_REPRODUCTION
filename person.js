@@ -1,19 +1,20 @@
 function Person(game, mom, dad, x, y) {
     this.gender = null;
-    this.age = 0;
+    this.age = 0
+    this.maxAge = 30 + Math.floor((Math.random() * 8));
     this.hasMatured = false;
     this.hasPartner = false;
     this.partner = null; //reference to partner
     this.colors = null;
     this.isAlive = true;
     this.isTerminallyIll = false;
-    this.timeToMature
+    this.deathCountdown = 0;
     this.parents = [mom, dad]; //[];//preffered order of mom, dad
     this.listOfChildren = [];
+    this.maxChildren = Math.floor(Math.random() * 5);
     this.radar = 200;
-    this.player = 1;
     this.reproductionWait = 0
-    this.radius = 20;
+    this.radius = 15;
     this.visualRadius = 500;
     this.velocity = { x: Math.random() * 1000, y: Math.random() * 1000 };
     var speed = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
@@ -50,8 +51,10 @@ Person.prototype.collide = function (other) {
 Person.prototype.matingOccured = function (other) {
     if (this.isAlive && other.isAlive && !this.isTerminallyIll && !other.isTerminallyIll) { // checks in case other dies right at collision
         if (!this.parents[0].listOfChildren.includes(other)) {//we dont support incest
-            if ((!this.hasPartner && !other.hasPartner) ||
-                ((this.partner === other) && (other.partner == this)) && (this.gender !== other.gender)) {
+            if ((!this.hasPartner && !other.hasPartner && !(this.gender === other.gender))) {
+                this.produceChild(other);
+            }
+            if ((this.partner === other) && (other.partner == this)) {
                 this.produceChild(other);
                 return true;
             }
@@ -74,7 +77,7 @@ Person.prototype.produceChild = function (other) {
     let childY = calculateMidY(this.y, other.y);
     let childX = calculateMidY(this.x, other.x);
 
-    let genderRandomizer = Math.random() * 100;
+    let genderRandomizer = Math.floor(Math.random() * 100);
 
     if (genderRandomizer < 50) {
         child = new Female(this.game, mom, dad, childX, childY);
@@ -87,9 +90,6 @@ Person.prototype.produceChild = function (other) {
     this.game.addEntity(child);
 }
 
-Person.prototype.getIllness = function () {
-
-}
 
 //Checks collision against canvas borders-----------------------------//
 
@@ -117,8 +117,9 @@ Person.prototype.draw = function (ctx) {
         if (this.hasMatured) {
             if (this.isTerminallyIll) {
                 color = this.colors[2];
+            } else {
+                color = this.colors[0];
             }
-            color = this.colors[0];
         } else {
             color = this.colors[1];
         }
@@ -138,15 +139,21 @@ Person.prototype.update = function () {
 
     //  console.log(this.velocity);
     if (this.isAlive) {
-        if((Math.random() * 100000) === 1){
+        if (Math.random() < 0.00001) {
             this.isTerminallyIll = true;
+        }
+        if (this.isTerminallyIll) {
+            if(this.deathCountdown > timeTillDeathFromIllness){
+                this.isAlive = false;
+            }
+            this.deathCountdown++;
         }
         if (!this.hasMatured) {
             if (this.getAge() >= matureAge) {
                 this.hasMatured = true;
             }
         } else {
-            if (this.getAge() >= maxAge) {
+            if (this.getAge() >= this.maxAge) {
                 this.isAlive = false;
             }
         }
@@ -175,16 +182,14 @@ Person.prototype.update = function () {
 
         for (var i = 0; i < this.game.entities.length; i++) {
             var entity = this.game.entities[i];
-            if (entity !== this && this.collide(entity)) {
-                if(this.hasMatured && !this.isTerminallyIll){
-                    if(this.reproductionWait = reproductionWaitTime){
-                    var mated = this.matingOccured(entity);
-                    this.reproductionWait = 0;
-                    } else {
-                        this.reproductionWait++;
+            if (entity.isAlive && entity !== this && this.collide(entity)) {
+                if (this.hasMatured && !this.isTerminallyIll) {
+                    if (this.reproductionWait > reproductionWaitTime && (this.listOfChildren.length < this.maxChildren)) {
+                        var mated = this.matingOccured(entity);
+                        this.reproductionWait = 0;
                     }
                 }
-                
+
                 var temp = { x: this.velocity.x, y: this.velocity.y };
 
                 var dist = distance(this, entity);
@@ -237,6 +242,7 @@ Person.prototype.update = function () {
             }
         }
         this.age++;
+        this.reproductionWait++;
     }
 
     this.velocity.x -= (1 - friction) * this.game.clockTick * this.velocity.x;

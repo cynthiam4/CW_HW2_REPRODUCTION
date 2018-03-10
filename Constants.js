@@ -1,14 +1,14 @@
 
 //canvas defaults
-var canvasWidth = 600;
+var canvasWidth = 800;
 var canvasHeight = 600;
 var ZERO = 0;
 
 //Entity Defaults
-var maxAge = 50;
-var matureAge= 10;
-var timeTillDeathFromIllness = 2;
-var reproductionWaitTime = 60;
+var maxAge = 30;
+var matureAge= 8;
+var timeTillDeathFromIllness = 180;
+var reproductionWaitTime = 180;//3 seconds
 
 //Entity Behavior
 var friction = 1;
