@@ -275,7 +275,7 @@ Person.prototype.update = function () {
         this.age++;
         this.reproductionWait++;
     }
-/* FUN PARTNER DETECTION STUFF
+//FUN PARTNER DETECTION STUFF
     if (this.hasPartner && distance(this, this.partner) > this.radius * 10 && this.gender === "male") {
         this.velocity.x = this.partner.x - this.x * 0.5;
         this.velocity.y = this.partner.y - this.y * 0.5;
@@ -283,7 +283,7 @@ Person.prototype.update = function () {
         this.velocity.x = this.partner.x - this.x * 0.5;
         this.velocity.y = this.partner.y - this.y * 0.5;
     }
-*/
+
     this.velocity.x -= (1 - friction) * this.game.clockTick * this.velocity.x;
     this.velocity.y -= (1 - friction) * this.game.clockTick * this.velocity.y;
 };
